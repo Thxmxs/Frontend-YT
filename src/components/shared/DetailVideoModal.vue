@@ -1,6 +1,7 @@
 
 <script setup>
 import VideoItem from '../VideoItem.vue'
+const btnClose = new URL(`@/assets/close.png`, import.meta.url).href;
 defineEmits(["close"]);
 
 
@@ -17,7 +18,8 @@ const props = defineProps({
 
         <div class="modal-inner">
             <div class="modal-inner-head">
-                <div @click="$emit('close')">x</div>
+                <!-- <div @click="$emit('close')">x</div> -->
+                <img @click="$emit('close')" :src="btnClose" alt="cerrar">
             </div>
             <div class="modal-inner-content">
                 <div class="modal-inner-video">
@@ -106,6 +108,12 @@ const props = defineProps({
     top: 20px;
 }
 
+.modal-inner-head>img {
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
 .modal-inner-head>div {
     font-weight: 600;
     font-size: 1.8rem;
@@ -122,26 +130,27 @@ const props = defineProps({
     }
 
     .modal-inner-description {
-    width: 100%;
-    height: 50%;
-    margin-top: 20px;
+        width: 100%;
+        height: 50%;
+        margin-top: 20px;
 
+    }
+
+
+    .modal-inner-description h4 {
+
+        margin-top: 0px;
+    }
+
+    .modal-inner-description p {
+        max-height: 80%;
+        font-size: .9rem;
+        margin-top: .95rem;
+    }
+
+    .modal-inner-video {
+        width: 100%;
+        height: 50%;
+    }
 }
-
-
-.modal-inner-description h4 {
-
-    margin-top: 0px;
-}
-
-.modal-inner-description p {
-    max-height: 80%;
-    font-size: .9rem;
-    margin-top: .95rem;
-}
-
-.modal-inner-video {
-    width: 100%;
-    height: 50%;
-}
-}</style>
+</style>

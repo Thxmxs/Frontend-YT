@@ -3,26 +3,48 @@ import { ref } from "vue";
 import axios from "axios";
 import { videosEndpoint } from "@/helpers/endpoints"
 import { itemsAddedToggle } from "../stores/fetchRecallActions"
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 let URLYT = ref(null);
 let postingData = ref(false);
 
 async function handleAddVideo() {
-
-    if (URLYT.value == null) return;
+    if (URLYT.value == null) {
+        toast.error("La URL del video es obligatoria", { position: toast.POSITION.TOP_RIGHT, });
+    }
     postingData.value = true;
     const idVideo = getIdVideoYoutube(URLYT.value);
+    if (!idVideo) {
+        return toast.error("La URL del video no es valida", { position: toast.POSITION.TOP_RIGHT, })
+    }
     const video = await getVideoInformation(idVideo);
+    if (!video) {
+        toast.error("La API key o el id del video son invalidos", { position: toast.POSITION.TOP_RIGHT, });
+    }
     const videoNormalized = normalizeVideoData(video);
-    await axios.post(`${videosEndpoint}`, videoNormalized).catch(err => console.log(err))
-    postingData.value = false;
-    URLYT.value = null
-    itemsAddedToggle.value = !itemsAddedToggle.value;
-    console.log(itemsAddedToggle.value)
+    if (!videoNormalized) {
+        toast.error("No se recibio un video valido", { position: toast.POSITION.TOP_RIGHT, });
+    }
+    try {
+        await axios.post(`${videosEndpoint}`, videoNormalized);
+        postingData.value = false;
+        URLYT.value = null
+        itemsAddedToggle.value = !itemsAddedToggle.value;
+        toast.success("Video añadido con éxito", { position: toast.POSITION.TOP_RIGHT, });
+    } catch (error) {
+        const errorHTML = `<ul>${error.response.data.errors.map(err => `<li>${err.msg}</li>`).join('')}</ul>`;
+        postingData.value = false;
+        return toast.error(errorHTML, { position: toast.POSITION.TOP_RIGHT, dangerouslyHTMLString: true });
+    }
+
 
 }
 
 function normalizeVideoData(video) {
+    if (!video) {
+        return undefined;
+    }
     let videoData = {
         videoId: video.id,
         title: video.snippet.title,
@@ -56,11 +78,11 @@ function getIdVideoYoutube(url) {
         return matchYoutuBe[1];
     }
 
-    return alert('Url no valido')
+    return undefined;
 }
 
 function parseVideoDuration(duracion) {
-    const duracionRegex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/; // Expresión regular para extraer horas, minutos y segundos
+    const duracionRegex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
     const match = duracion.match(duracionRegex);
 
     const horas = match[1] ? parseInt(match[1]) : 0;

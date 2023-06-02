@@ -1,11 +1,12 @@
 <script setup>
-import { onMounted, ref, watch, watchEffect } from "vue";
+import { onMounted, ref, watchEffect } from "vue";
 import VideoItem from './VideoItem.vue'
 import DeleteVideoModal from './shared/DeleteVideoModal.vue'
 import DetailVideoModal from './shared/DetailVideoModal.vue'
 import axios from 'axios';
 import { videosEndpoint } from "../helpers/endpoints";
-import { itemsAddedToggle } from "../stores/fetchRecallActions"
+import { itemsAddedToggle, itemsDeleteToggle } from "../stores/fetchRecallActions"
+
 
 let loadingData = ref(false);
 let videos = ref([]);
@@ -21,7 +22,13 @@ onMounted(async () => {
     getVideos();
 })
 watchEffect(() => {
-    if (itemsAddedToggle.value || !itemsAddedToggle.value.recallData) {
+    if (itemsAddedToggle.value.recallData || !itemsAddedToggle.value.recallData) {
+        getVideos();
+    }
+
+})
+watchEffect(() => {
+    if (itemsDeleteToggle.value.recallData || !itemsDeleteToggle.value.recallData) {
         getVideos();
     }
 })
@@ -39,11 +46,9 @@ watchEffect(() => {
     </div>
 
     <DeleteVideoModal v-if="VideoToDelete" @close="VideoToDelete = null" :video="VideoToDelete">
-        lorem
     </DeleteVideoModal>
 
-    <DetailVideoModal v-if="VideoSelected" @close="VideoSelected = null" :video="VideoSelected" title="CS"
-        description="Este es un test de texto para visualizar su contenido" />
+    <DetailVideoModal v-if="VideoSelected" @close="VideoSelected = null" :video="VideoSelected" />
 </template>
 
 <style scoped>
@@ -58,15 +63,17 @@ watchEffect(() => {
 
 
 @media (max-width: 769px) {
-  .video-item-list-container {
-    grid-template-columns: 1fr 1fr;
-  }
+    .video-item-list-container {
+        grid-template-columns: 1fr 1fr;
+    }
 }
+
 @media (max-width: 481px) {
-  .video-item-list-container {
-    grid-template-columns: 1fr;
-  }
+    .video-item-list-container {
+        grid-template-columns: 1fr;
+    }
 }
+
 .img {
     width: 100%;
 }

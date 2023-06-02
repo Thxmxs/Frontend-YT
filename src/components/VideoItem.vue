@@ -56,12 +56,13 @@ const startVideo = ref(false);
   min-height: 230px;
 
 }
+
 @media (max-width: 769px) {
   .iframe-container {
-  height: 100%;
-  min-height: auto;
+    height: 100%;
+    min-height: auto;
 
-}
+  }
 }
 
 @keyframes opacity {
@@ -114,6 +115,7 @@ const startVideo = ref(false);
 .video-item-container img:first-child {
   width: 100%;
   position: relative;
+  cursor: pointer;
 }
 
 .video-item-container-close {
