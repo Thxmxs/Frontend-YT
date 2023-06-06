@@ -7,7 +7,6 @@ import axios from 'axios';
 import { videosEndpoint } from "../helpers/endpoints";
 import { itemsAddedToggle, itemsDeleteToggle } from "../stores/fetchRecallActions"
 
-
 let loadingData = ref(false);
 let videos = ref([]);
 let VideoToDelete = ref(null);

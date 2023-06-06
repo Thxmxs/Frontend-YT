@@ -1,17 +1,24 @@
 <script setup>
+import Formulario from './components/Formulario.vue';
 import SearchBar from './components/SearchBar.vue'
 import VideoItem from './components/VideoItemList.vue'
 
+const schema = [
+  { key: "name", type: "input", name: "Nombre" },
+  { key: "lastName", type: "input", name: "lastName" },
+  { key: "message", type: "textarea", name: "Mensaje" },
+]
 </script >
 
 <template>
   <div class="container">
     <div class="container-content">
-      <header>
-        <SearchBar />
-      </header>
+      <!-- <header>
+          <SearchBar />
+        </header> -->
       <main>
-        <VideoItem />
+        <!-- <VideoItem /> -->
+        <Formulario :props=schema />
       </main>
     </div>
   </div>
@@ -41,4 +48,5 @@ body {
   max-width: 1300px;
   padding-top: 6%;
   margin: 0 auto;
-}</style>
+}
+</style>
