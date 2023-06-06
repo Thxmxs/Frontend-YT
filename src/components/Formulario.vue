@@ -13,7 +13,6 @@ const onHandleSubmit = () => {
   const { ...data } = formData;
 
   for (const prop in data) {
-    console.log(prop)
     dataNormalized[prop] = data[prop].value.value
   }
 
