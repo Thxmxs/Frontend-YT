@@ -16,6 +16,8 @@ const onHandleSubmit = () => {
     dataNormalized[prop] = data[prop].value.value
   }
 
+  alert(JSON.stringify(dataNormalized));
+
 }
 
 </script>
