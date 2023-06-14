@@ -15,9 +15,6 @@ __Despliegues__
 2. FrontEnd: S3 bucket
 3. DB: Mongo Atlas
 
-__Repositorio Backend__
-https://github.com/Thxmxs/Backend-YT
-
 __Demo__
 http://frontendyt.s3-website.us-east-2.amazonaws.com/
 
